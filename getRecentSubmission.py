@@ -45,24 +45,13 @@ def commit_and_pushtoGithub(gitURL, file, username, userpass):
     path = os.getcwd()
     # print(path)
     repo = git.Repo(path)
-    # username = username
-    # password = userpass
-    # remote = f"https://{username}:{password}" + gitURL
+    username = username
+    password = userpass
+    remote = f"https://{username}:{password}" + gitURL
     # repo = git.Repo.clone_from(remote, path)
     # for remote in repo.remotes:
         # print(f'- {remote.name} {remote.url}')
     
-    # repo.git.pull()
-    # repo.git.push('origin', 'master', set_upstream=True)
-
-    # repo.remotes.origin.push('--set-upstream', master)
-    # origin = repo.remotes.origin
-    # origin.set_url(gitURL)
-    # # print(dir(origin))
-    # origin.push()
-    # origin.push()
-    # for item in dir(repo.remotes):
-    #     print(item)
     
     repo.git.add(file)    
     curTime = time.localtime()    
@@ -84,8 +73,8 @@ while True:
     # writeToFile(submissionList)
     remoteURL = '@github.com/feiteng-gcp/submissionHistory.git'
     username = 'feiteng-gcp'
-    userpass = '12-/qwASZX'
-    commit_and_pushtoGithub(remoteURL, 'submission_result.md','','')
+    userpass = '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'
+    commit_and_pushtoGithub(remoteURL, 'submission_result.md',username, userpass)
     break
     # sleep for 60 minutes
     # time.sleep(60 * 60)
