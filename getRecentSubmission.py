@@ -1,6 +1,8 @@
-import requests, json, time, collections, git, os
+import requests, json, time, collections, git, os, subprocess
+
 
 def getSubmission(USERNAME, CSRF_Token):
+    print('Getting submission..')
     COOKIE = 'csrftoken=' + CSRF_Token
     X_CSRFTOKEN = CSRF_Token
     url = 'https://leetcode.com/graphql'
@@ -25,6 +27,7 @@ def getSubmission(USERNAME, CSRF_Token):
         timeStamp = each_submission['timestamp']
         ctime = time.ctime((int)(timeStamp))
         successful_submission_result[USERNAME][questionTitle] = ctime
+    print('Successfully crawled submission..')
     return successful_submission_result
 
 def readToken():
@@ -42,25 +45,31 @@ def writeToFile(subsmission):
     f.close()
 
 def commit_and_pushtoGithub(gitURL, file, username, userpass):
-    path = os.getcwd()
-    # print(path)
-    repo = git.Repo(path)
-    username = username
-    password = userpass
-    remote = f"https://{username}:{password}" + gitURL
-    # repo = git.Repo.clone_from(remote, path)
-    # for remote in repo.remotes:
-        # print(f'- {remote.name} {remote.url}')
-    
-    
-    repo.git.add(file)    
     curTime = time.localtime()    
     cur_time = time.strftime('%Y %b %H:%M:%S', curTime)
-    try:
-        repo.git.commit('-m', 'auto committed on ..' + cur_time)
-    except:
-        pass
-    repo.git.push()#'origin', 'master', set_upstream=True)
+    commit_message = 'auto committed on ..' + cur_time
+    
+    print('Trying to push..')
+
+    subprocess.call(['git', 'add' , file])
+    subprocess.call(['git', 'commit' , '-m', commit_message])
+    pushURL = 'https://{}:{}{}'.format(username, userpass, gitURL)
+    # print(pushURL)
+    subprocess.call(['git', 'push'])#, pushURL])
+
+    
+    # path = os.getcwd()
+    # # print(path)
+    # repo = git.Repo(path)
+    # username = username
+    # password = userpass
+    
+    
+    # repo.index.add(file)    
+    
+    
+    # origin = repo.remote('origin')
+    # origin.push()
     print("Successful..")
 
 
@@ -73,7 +82,9 @@ while True:
     # writeToFile(submissionList)
     remoteURL = '@github.com/feiteng-gcp/submissionHistory.git'
     username = 'feiteng-gcp'
+    # userpass = ''
     userpass = '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'
+
     commit_and_pushtoGithub(remoteURL, 'submission_result.md',username, userpass)
     break
     # sleep for 60 minutes
