@@ -67,7 +67,10 @@ def commit_and_pushtoGithub(gitURL, file, username, userpass):
     repo.git.add(file)    
     curTime = time.localtime()    
     cur_time = time.strftime('%Y %b %H:%M:%S', curTime)
-    repo.git.commit('-m', 'auto committed on ..' + cur_time)
+    try:
+        repo.git.commit('-m', 'auto committed on ..' + cur_time)
+    except:
+        pass
     repo.git.push()#'origin', 'master', set_upstream=True)
     print("Successful..")
 
