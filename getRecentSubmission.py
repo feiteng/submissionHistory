@@ -38,7 +38,8 @@ def writeToFile(subsmission):
     curTime = time.localtime()    
     cur_time = time.strftime('%Y %b %H:%M %p %z', curTime)
     update_time = 'File updated on..' + cur_time
-    banner = 'update_time\n|User Handle|Question|Last Successful Submission|\n|-|-|-|\n'
+    os.environ['TZ'] = 'Americas/New_York'
+    banner = update_time + '\n|User Handle|Question|Last Successful Submission|\n|-|-|-|\n'
     f = open('submission_result.md', 'w')
     f.write(banner)
     for name in subsmission:
