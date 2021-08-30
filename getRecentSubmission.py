@@ -44,33 +44,25 @@ def writeToFile(subsmission):
             f.write(name + '|' + question + '|' + timestamp + '\n')
     f.close()
 
-def commit_and_pushtoGithub(gitURL, file, username, userpass):
+def commit_and_pushtoGithub(gitURL, file)
     curTime = time.localtime()    
-    cur_time = time.strftime('%Y %b %H:%M:%S', curTime)
+    cur_time = time.strftime('%Y %b %H:%M %p %z', curTime)
     commit_message = 'auto committed on ..' + cur_time
     
     print('Trying to push..')
 
-    subprocess.call(['git', 'add' , file])
-    subprocess.call(['git', 'commit' , '-m', commit_message])
-    pushURL = 'https://{}:{}{}'.format(username, userpass, gitURL)
-    # print(pushURL)
-    subprocess.call(['git', 'push'])#, pushURL])
-
+    push_successful = True
+    try:
+        subprocess.call(['git', 'add' , file])
+        subprocess.call(['git', 'commit' , '-m', commit_message])
+        subprocess.call(['git', 'push'])
+    except Error:
+        push_successful = False
+        print(Error)
+        pass
     
-    # path = os.getcwd()
-    # # print(path)
-    # repo = git.Repo(path)
-    # username = username
-    # password = userpass
-    
-    
-    # repo.index.add(file)    
-    
-    
-    # origin = repo.remote('origin')
-    # origin.push()
-    print("Successful..")
+    if push_successful:
+        print("Successful..")
 
 
 CSRF_Token = readToken()
@@ -80,12 +72,7 @@ USERNAME = 'xianglaniunan'
 while True:
     # submissionList = getSubmission(USERNAME=USERNAME, CSRF_Token=CSRF_Token)
     # writeToFile(submissionList)
-    remoteURL = '@github.com/feiteng-gcp/submissionHistory.git'
-    username = 'feiteng-gcp'
-    # userpass = ''
-    userpass = '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'
-
-    commit_and_pushtoGithub(remoteURL, 'submission_result.md',username, userpass)
+    commit_and_pushtoGithub(remoteURL, 'submission_result.md')
     break
     # sleep for 60 minutes
     # time.sleep(60 * 60)
