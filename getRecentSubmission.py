@@ -35,7 +35,10 @@ def readToken():
         return f.readline()
 
 def writeToFile(subsmission):
-    banner = '|User Handle|Question|Last Successful Submission|\n|-|-|-|\n'
+    curTime = time.localtime()    
+    cur_time = time.strftime('%Y %b %H:%M %p %z', curTime)
+    update_time = 'File updated on..' + cur_time
+    banner = 'update_time\n|User Handle|Question|Last Successful Submission|\n|-|-|-|\n'
     f = open('submission_result.md', 'w')
     f.write(banner)
     for name in subsmission:
@@ -74,6 +77,6 @@ while True:
     writeToFile(submissionList)
     commit_and_pushtoGithub('submission_result.md')
     # break
-    # sleep for 60 minutes
-    time.sleep(60 * 60)
+    # sleep for 60 seconds to see effects
+    time.sleep(60)
 
