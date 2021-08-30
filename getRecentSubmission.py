@@ -1,4 +1,4 @@
-import requests, json, time, collections, git, os, subprocess
+import requests, json, time, collections, os, subprocess
 
 
 def getSubmission(USERNAME, CSRF_Token):
@@ -44,7 +44,7 @@ def writeToFile(subsmission):
             f.write(name + '|' + question + '|' + timestamp + '\n')
     f.close()
 
-def commit_and_pushtoGithub(gitURL, file)
+def commit_and_pushtoGithub(file):
     curTime = time.localtime()    
     cur_time = time.strftime('%Y %b %H:%M %p %z', curTime)
     commit_message = 'auto committed on ..' + cur_time
@@ -70,10 +70,10 @@ CSRF_Token = readToken()
 USERNAME = 'xianglaniunan'
 
 while True:
-    # submissionList = getSubmission(USERNAME=USERNAME, CSRF_Token=CSRF_Token)
-    # writeToFile(submissionList)
-    commit_and_pushtoGithub(remoteURL, 'submission_result.md')
-    break
+    submissionList = getSubmission(USERNAME=USERNAME, CSRF_Token=CSRF_Token)
+    writeToFile(submissionList)
+    commit_and_pushtoGithub('submission_result.md')
+    # break
     # sleep for 60 minutes
-    # time.sleep(60 * 60)
+    time.sleep(60 * 60)
 
